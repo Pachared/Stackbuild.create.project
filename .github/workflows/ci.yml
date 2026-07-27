@@ -126,10 +126,7 @@ jobs:
         working-directory: services-${{ matrix.package_manager }}
         run: |
           docker compose up -d database redis
-          if [ '${{ matrix.package_manager }}' = npm ]; then npm run start -w @stackbuild/api > api.log 2>&1 & fi
-          if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm --filter @stackbuild/api start > api.log 2>&1 & fi
-          if [ '${{ matrix.package_manager }}' = yarn ]; then yarn workspace @stackbuild/api start > api.log 2>&1 & fi
-          if [ '${{ matrix.package_manager }}' = bun ]; then bun --cwd apps/api run start > api.log 2>&1 & fi
+          node apps/api/dist/main.js > api.log 2>&1 &
           api_pid=$!
           trap 'kill "$api_pid" || true; docker compose down -v' EXIT
           for attempt in $(seq 1 20); do
