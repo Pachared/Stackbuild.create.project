@@ -74,3 +74,66 @@ jobs:
           if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm build; fi
           if [ '${{ matrix.package_manager }}' = yarn ]; then yarn build; fi
           if [ '${{ matrix.package_manager }}' = bun ]; then bun run build; fi
+
+  generated-services:
+    needs: quality
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package_manager: [npm, pnpm, yarn, bun]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - uses: pnpm/action-setup@v4
+        if: matrix.package_manager == 'pnpm'
+        with:
+          version: 10
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.package_manager == 'bun'
+        with:
+          bun-version: latest
+      - run: npm ci
+      - run: npm run build
+      - name: Generate Nest, PostgreSQL, and Redis project
+        run: >-
+          node dist/cli.js services-${{ matrix.package_manager }}
+          --template customer-api --frontend vite --backend nest --ui css
+          --database postgres --cache redis --package-manager ${{ matrix.package_manager }}
+          --skip-install --no-git --docker
+      - name: Validate service compose configuration
+        working-directory: services-${{ matrix.package_manager }}
+        run: docker compose config --quiet
+      - name: Install generated project
+        working-directory: services-${{ matrix.package_manager }}
+        run: |
+          if [ '${{ matrix.package_manager }}' = npm ]; then npm install; fi
+          if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm install; fi
+          if [ '${{ matrix.package_manager }}' = yarn ]; then corepack enable && yarn install --ignore-engines; fi
+          if [ '${{ matrix.package_manager }}' = bun ]; then bun install; fi
+      - name: Generate Prisma client and build API
+        working-directory: services-${{ matrix.package_manager }}
+        run: |
+          if [ '${{ matrix.package_manager }}' = npm ]; then npm run prisma:generate -w @stackbuild/api && npm run build -w @stackbuild/api; fi
+          if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm --filter @stackbuild/api prisma:generate && pnpm --filter @stackbuild/api build; fi
+          if [ '${{ matrix.package_manager }}' = yarn ]; then yarn workspace @stackbuild/api prisma:generate && yarn workspace @stackbuild/api build; fi
+          if [ '${{ matrix.package_manager }}' = bun ]; then bun --cwd apps/api run prisma:generate && bun --cwd apps/api run build; fi
+      - name: Smoke-test PostgreSQL, Redis, and the generated API
+        working-directory: services-${{ matrix.package_manager }}
+        run: |
+          docker compose up -d database redis
+          if [ '${{ matrix.package_manager }}' = npm ]; then npm run start -w @stackbuild/api > api.log 2>&1 & fi
+          if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm --filter @stackbuild/api start > api.log 2>&1 & fi
+          if [ '${{ matrix.package_manager }}' = yarn ]; then yarn workspace @stackbuild/api start > api.log 2>&1 & fi
+          if [ '${{ matrix.package_manager }}' = bun ]; then bun --cwd apps/api run start > api.log 2>&1 & fi
+          api_pid=$!
+          trap 'kill "$api_pid" || true; docker compose down -v' EXIT
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent --show-error http://localhost:8080/health; then exit 0; fi
+            sleep 1
+          done
+          cat api.log
+          exit 1

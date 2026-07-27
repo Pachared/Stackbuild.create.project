@@ -9,7 +9,7 @@
 - Docker Compose v2 เมื่อต้องการเลือก Docker
 - pnpm, npm, Yarn หรือ Bun ตาม package manager ที่เลือก
 
-StackBuild ใช้ dependency tag `latest` ขณะสร้างโปรเจกต์ เพื่อให้ได้ stack ปัจจุบันที่สุด และมี CI รายสัปดาห์ตรวจ template กับ dependency ล่าสุดก่อน release
+StackBuild ใช้เวอร์ชันที่ผ่านการทดสอบร่วมกันสำหรับ framework หลัก (เช่น Next.js, NestJS, TypeScript, Vite และ React) เพื่อให้โปรเจกต์ที่สร้างมีความเสถียร ส่วน Dependabot จะเสนอ PR อัปเดตทุกสัปดาห์ และ CI จะตรวจทุก template ก่อนนำเวอร์ชันใหม่มาใช้
 
 ## สร้างโปรเจกต์
 
@@ -56,6 +56,7 @@ npm create stackbuild@latest my-project -- \
 | Flag | ค่าที่ใช้ได้ / ความหมาย |
 | --- | --- |
 | `--preset` | `full`, `customer-partner`, `customer-admin`, `customer-api` หรือ `custom` |
+| `--template` | ชื่อเดียวกับ `--preset` ใช้สำหรับระบุ template แบบไม่ต้องตอบคำถาม |
 | `--apps` | รายชื่อ frontend คั่นด้วย comma สำหรับ `--preset custom` เช่น `customer,partner` |
 | `--frontend` | `vite` หรือ `next` |
 | `--backend` | `go` หรือ `nest` |
@@ -77,7 +78,7 @@ npm create stackbuild@latest my-project -- \
 
 ```bash
 npm create stackbuild@latest my-project -- \
-  --preset custom --apps customer,partner --frontend next --backend nest \
+  --template custom --apps customer,partner --frontend next --backend nest \
   --database postgres --cache redis --package-manager pnpm --dry-run
 ```
 
