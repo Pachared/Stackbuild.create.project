@@ -7,8 +7,8 @@ export async function generateRoot(options: StackOptions): Promise<void> {
   const scripts: Record<string, string> = { lint: 'npm run -ws lint --if-present', format: 'prettier --write .', clean: 'rimraf apps/*/dist apps/*/.next' };
   for (const app of apps) {
     if (app === 'api' && options.backend === 'go') { scripts['dev:api'] = 'cd apps/api && go run ./cmd/api'; scripts['build:api'] = 'cd apps/api && go build ./cmd/api'; continue; }
-    scripts[`dev:${app}`] = pm === 'npm' ? `npm run dev -w @stackforge/${app}` : `${pm} --filter @stackforge/${app} dev`;
-    scripts[`build:${app}`] = pm === 'npm' ? `npm run build -w @stackforge/${app}` : `${pm} --filter @stackforge/${app} build`;
+    scripts[`dev:${app}`] = pm === 'npm' ? `npm run dev -w @stackbuild/${app}` : `${pm} --filter @stackbuild/${app} dev`;
+    scripts[`build:${app}`] = pm === 'npm' ? `npm run build -w @stackbuild/${app}` : `${pm} --filter @stackbuild/${app} build`;
   }
   scripts.dev = 'concurrently ' + apps.map(app => `"${app === 'api' && options.backend === 'go' ? 'cd apps/api && go run ./cmd/api' : `${pm === 'npm' ? 'npm run' : pm} dev:${app}`}"`).join(' ');
   scripts.build = apps.map(app => app === 'api' && options.backend === 'go' ? 'cd apps/api && go build ./cmd/api' : `${pm === 'npm' ? 'npm run' : pm} build:${app}`).join(' && ');
@@ -22,6 +22,6 @@ export async function generateRoot(options: StackOptions): Promise<void> {
   if (options.database !== 'none') env.push(`DATABASE_URL=${databaseUrl(options)}`, 'JWT_SECRET=change-me-in-production');
   if (apps.some(x => FRONTEND_APPS.includes(x))) env.push(options.frontend === 'vite' ? 'VITE_API_URL=http://localhost:8080' : 'NEXT_PUBLIC_API_URL=http://localhost:8080');
   await write(root, '.env.example', env.join('\n') + '\n');
-  await write(root, 'README.md', `# ${options.projectName}\n\nGenerated with Create StackForge.\n\n## Start\n\n\`\`\`bash\n${pm} install\n${pm === 'npm' ? 'npm run dev' : `${pm} dev`}\n\`\`\`\n`);
+  await write(root, 'README.md', `# ${options.projectName}\n\nGenerated with Create StackBuild.\n\n## Start\n\n\`\`\`bash\n${pm} install\n${pm === 'npm' ? 'npm run dev' : `${pm} dev`}\n\`\`\`\n`);
 }
 function databaseUrl(o: StackOptions): string { return o.database === 'postgres' ? 'postgresql://postgres:postgres@localhost:5432/app' : o.database === 'mysql' ? 'mysql://root:root@localhost:3306/app' : 'file:./dev.db'; }

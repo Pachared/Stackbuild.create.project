@@ -18,5 +18,5 @@ export async function assertTargetDirectory(targetDir: string, force: boolean): 
 }
 export function assertNodeVersion(): void {
   const major = Number(process.versions.node.split('.')[0]);
-  if (major < 20) throw new Error('Create StackForge requires Node.js 20 or newer.');
+  if (major < 20) throw new Error('Create StackBuild requires Node.js 20 or newer.');
 }

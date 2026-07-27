@@ -1,9 +1,9 @@
 {
-  "name": "create-stackforge",
+  "name": "create-stackbuild",
   "version": "0.1.0",
   "description": "Interactive full-stack monorepo scaffolder",
   "type": "module",
-  "bin": { "create-stackforge": "./dist/cli.js" },
+  "bin": { "create-stackbuild": "./dist/cli.js" },
   "files": ["dist", "templates", "README.md"],
   "engines": { "node": ">=20" },
   "scripts": {

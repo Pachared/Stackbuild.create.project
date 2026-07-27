@@ -1,6 +1,6 @@
-# Create StackForge
+# Create StackBuild
 
-`create-stackforge` is an interactive, production-minded CLI that creates a full-stack monorepo with one or more frontend apps, an API, shared workspace packages, optional database wiring, and Docker support.
+`create-stackbuild` is an interactive, production-minded CLI that creates a full-stack monorepo with one or more frontend apps, an API, shared workspace packages, optional database wiring, and Docker support.
 
 ## Requirements
 
@@ -10,15 +10,15 @@
 ## Usage
 
 ```bash
-npm create stackforge@latest
-npm create stackforge@latest my-project
-npx create-stackforge@latest my-project
+npm create stackbuild@latest
+npm create stackbuild@latest my-project
+npx create-stackbuild@latest my-project
 ```
 
 Forward flags through `npm create` after `--` because npm otherwise consumes them itself:
 
 ```bash
-npm create stackforge@latest my-project -- \
+npm create stackbuild@latest my-project -- \
   --preset customer-admin --frontend vite --backend go --ui mui \
   --database postgres --package-manager npm --docker
 ```
