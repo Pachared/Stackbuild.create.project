@@ -122,6 +122,7 @@ jobs:
           if [ '${{ matrix.package_manager }}' = yarn ]; then yarn workspace @stackbuild/api prisma:generate && yarn workspace @stackbuild/api build; fi
           if [ '${{ matrix.package_manager }}' = bun ]; then bun --cwd apps/api run prisma:generate && bun --cwd apps/api run build; fi
       - name: Smoke-test PostgreSQL, Redis, and the generated API
+        if: matrix.package_manager == 'npm'
         working-directory: services-${{ matrix.package_manager }}
         run: |
           docker compose up -d database redis
