@@ -2,6 +2,10 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.2.6
+
+- Disable Corepack's interactive download prompt when installing pnpm dependencies.
+
 ## 0.2.5
 
 - Record npm trusted-publishing releases in GitHub's `npm` deployment environment.
