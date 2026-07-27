@@ -20,6 +20,7 @@ export async function generateRoot(options: StackOptions): Promise<void> {
   await write(root, '.prettierignore', 'node_modules\ndist\n.next\n');
   const env = ['NODE_ENV=development', 'API_PORT=8080', 'APP_URL=http://localhost:3000'];
   if (options.database !== 'none') env.push(`DATABASE_URL=${databaseUrl(options)}`, 'JWT_SECRET=change-me-in-production');
+  if (options.cache === 'redis') env.push('REDIS_URL=redis://localhost:6379');
   if (apps.some(x => FRONTEND_APPS.includes(x))) env.push(options.frontend === 'vite' ? 'VITE_API_URL=http://localhost:8080' : 'NEXT_PUBLIC_API_URL=http://localhost:8080');
   await write(root, '.env.example', env.join('\n') + '\n');
   await write(root, 'README.md', `# ${options.projectName}\n\nGenerated with Create StackBuild.\n\n## Start\n\n\`\`\`bash\n${pm} install\n${pm === 'npm' ? 'npm run dev' : `${pm} dev`}\n\`\`\`\n`);

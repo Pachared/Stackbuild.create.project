@@ -59,6 +59,8 @@ npm create stackbuild@latest my-project -- \
 | `--backend` | `go` หรือ `nest` |
 | `--ui` | `mui`, `tailwind` หรือ `css` |
 | `--database` | `postgres`, `mysql`, `sqlite` หรือ `none` |
+| `--cache` | `redis` หรือ `none` |
+| Cache | เลือก `Use Redis cache` หรือ `No cache` หลังจากเลือกฐานข้อมูล |
 | `--package-manager` | `npm`, `pnpm`, `yarn` หรือ `bun` |
 | `--skip-install` | สร้างไฟล์โดยไม่ติดตั้ง dependencies |
 | `--no-git` | ไม่สร้าง Git repository ในโปรเจกต์ใหม่ |

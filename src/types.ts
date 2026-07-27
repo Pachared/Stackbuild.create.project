@@ -2,6 +2,7 @@ export type Frontend = 'vite' | 'next';
 export type Backend = 'go' | 'nest';
 export type Ui = 'mui' | 'tailwind' | 'css';
 export type Database = 'postgres' | 'mysql' | 'sqlite' | 'none';
+export type Cache = 'redis' | 'none';
 export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
 export type AppName = 'customer' | 'admin' | 'partner' | 'api';
 export type Preset = 'full' | 'customer-partner' | 'customer-admin' | 'customer-api' | 'custom';
@@ -15,6 +16,7 @@ export interface StackOptions {
   backend: Backend;
   ui: Ui;
   database: Database;
+  cache: Cache;
   packageManager: PackageManager;
   docker: boolean;
   git: boolean;
@@ -26,6 +28,6 @@ export interface StackOptions {
 
 export interface CliOptions {
   preset?: Preset; frontend?: Frontend; backend?: Backend; ui?: Ui;
-  database?: Database; packageManager?: PackageManager; docker?: boolean;
+  database?: Database; cache?: Cache; packageManager?: PackageManager; docker?: boolean;
   git?: boolean; install?: boolean; force?: boolean; debug?: boolean;
 }
