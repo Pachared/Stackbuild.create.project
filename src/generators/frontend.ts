@@ -7,13 +7,13 @@ export async function generateFrontend(o: StackOptions, app: Exclude<AppName, 'a
 }
 async function vite(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void> {
   const root = o.targetDir, base = `apps/${app}`;
-  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@vitejs/plugin-react': 'latest', typescript: 'latest', vite: 'latest', eslint: 'latest' } });
+  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@types/node': 'latest', '@vitejs/plugin-react': 'latest', typescript: 'latest', vite: 'latest', eslint: 'latest' } });
   await write(root, `${base}/.env.example`, 'VITE_API_URL=http://localhost:8080\n');
   await write(root, `${base}/index.html`, `<div id="root"></div><script type="module" src="/src/main.tsx"></script>\n`);
-  await write(root, `${base}/vite.config.ts`, `import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nimport path from 'node:path';\nexport default defineConfig({ plugins: [react()], resolve: { alias: { '@': path.resolve(__dirname, 'src') } } });\n`);
+  await write(root, `${base}/vite.config.ts`, `import { fileURLToPath } from 'node:url';\nimport path from 'node:path';\nimport { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nconst dirname = path.dirname(fileURLToPath(import.meta.url));\nexport default defineConfig({ plugins: [react()], resolve: { alias: { '@': path.resolve(dirname, 'src') } } });\n`);
   await write(root, `${base}/tsconfig.json`, '{ "files": [], "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }] }\n');
-  await write(root, `${base}/tsconfig.app.json`, '{ "compilerOptions": { "target": "ES2022", "useDefineForClassFields": true, "lib": ["ES2022", "DOM", "DOM.Iterable"], "allowJs": false, "skipLibCheck": true, "esModuleInterop": true, "allowSyntheticDefaultImports": true, "strict": true, "module": "ESNext", "moduleResolution": "bundler", "jsx": "react-jsx", "baseUrl": ".", "paths": { "@/*": ["./src/*"] } }, "include": ["src"] }\n');
-  await write(root, `${base}/tsconfig.node.json`, '{ "compilerOptions": { "composite": true, "module": "ESNext", "moduleResolution": "bundler", "allowSyntheticDefaultImports": true }, "include": ["vite.config.ts"] }\n');
+  await write(root, `${base}/tsconfig.app.json`, '{ "compilerOptions": { "target": "ESNext", "useDefineForClassFields": true, "lib": ["ESNext", "DOM", "DOM.Iterable"], "allowJs": false, "skipLibCheck": true, "esModuleInterop": true, "allowSyntheticDefaultImports": true, "strict": true, "module": "ESNext", "moduleResolution": "bundler", "jsx": "react-jsx", "paths": { "@/*": ["./src/*"] } }, "include": ["src"] }\n');
+  await write(root, `${base}/tsconfig.node.json`, '{ "compilerOptions": { "composite": true, "target": "ESNext", "lib": ["ESNext"], "module": "ESNext", "moduleResolution": "bundler", "allowSyntheticDefaultImports": true, "types": ["node"] }, "include": ["vite.config.ts"] }\n');
   await write(root, `${base}/eslint.config.js`, "export default [{ ignores: ['dist'] }];\n");
   await frontendFiles(root, base, app, o, false);
 }

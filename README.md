@@ -52,12 +52,14 @@ npm create stackbuild@latest my-project -- \
 | Flag | ค่าที่ใช้ได้ / ความหมาย |
 | --- | --- |
 | `--preset` | `full`, `customer-partner`, `customer-admin`, `customer-api` หรือ `custom` |
+| `--apps` | รายชื่อ frontend คั่นด้วย comma สำหรับ `--preset custom` เช่น `customer,partner` |
 | `--frontend` | `vite` หรือ `next` |
 | `--backend` | `go` หรือ `nest` |
 | `--ui` | `mui`, `tailwind` หรือ `css` |
 | `--database` | `postgres`, `mysql`, `sqlite` หรือ `none` |
 | `--cache` | `redis` หรือ `none` |
 | `--package-manager` | `pnpm`, `npm`, `yarn` หรือ `bun` |
+| `--go-module` | Go module path เมื่อเลือก `--backend go` |
 | `--skip-install` | สร้างไฟล์โดยไม่ติดตั้ง dependencies |
 | `--no-git` | ไม่สร้าง Git repository ในโปรเจกต์ใหม่ |
 | `--docker` / `--no-docker` | เปิดหรือปิดการสร้างไฟล์ Docker |

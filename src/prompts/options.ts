@@ -1,6 +1,7 @@
 import { checkbox, confirm, input, select } from '@inquirer/prompts';
 import { FRONTEND_APPS, PRESETS } from '../constants.js';
 import type { AppName, CliOptions, StackOptions } from '../types.js';
+import { validateGoModule } from '../utils/validation.js';
 
 const choice = (name: string, value: string) => ({ name, value });
 
@@ -10,7 +11,7 @@ export async function collectOptions(projectName: string, targetDir: string, fla
     choice('Customer + API + Admin', 'customer-admin'), choice('Customer + API', 'customer-api'), choice('Custom', 'custom'),
   ] }) as StackOptions['preset'];
   const apps: AppName[] = preset === 'custom'
-    ? [...await checkbox({ message: 'Applications to generate:', choices: FRONTEND_APPS.map(app => ({ name: app, value: app, checked: app === 'customer' })), required: true }), 'api'] as AppName[]
+    ? [...(flags.apps ?? await checkbox({ message: 'Applications to generate:', choices: FRONTEND_APPS.map(app => ({ name: app, value: app, checked: app === 'customer' })), required: true })), 'api'] as AppName[]
     : [...PRESETS[preset]];
   const frontend = flags.frontend ?? await select({ message: 'Frontend stack:', choices: [choice('React + TypeScript + Vite', 'vite'), choice('Next.js + TypeScript + App Router', 'next')] }) as StackOptions['frontend'];
   const backend = flags.backend ?? await select({ message: 'Backend stack:', choices: [choice('Go + Gin', 'go'), choice('Node.js + NestJS', 'nest')] }) as StackOptions['backend'];
@@ -21,6 +22,7 @@ export async function collectOptions(projectName: string, targetDir: string, fla
   const docker = flags.docker ?? await confirm({ message: 'Generate Docker support?', default: true });
   const git = flags.git ?? await confirm({ message: 'Initialize a Git repository?', default: true });
   const install = flags.install ?? await confirm({ message: 'Install dependencies now?', default: true });
-  const goModule = backend === 'go' ? await input({ message: 'Go module path:', default: `github.com/username/${projectName}/apps/api` }) : '';
+  const goModule = backend === 'go' ? flags.goModule ?? await input({ message: 'Go module path:', default: `github.com/username/${projectName}/apps/api`, validate: validateGoModule }) : '';
+  if (backend === 'go' && validateGoModule(goModule) !== true) throw new Error(String(validateGoModule(goModule)));
   return { projectName, targetDir, preset, apps, frontend, backend, ui, database, cache, packageManager, docker, git, install, force: flags.force ?? false, debug: flags.debug ?? false, goModule };
 }
