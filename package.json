@@ -1,11 +1,19 @@
 {
   "name": "create-stackbuild",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Interactive full-stack monorepo scaffolder",
   "type": "module",
   "bin": {
     "create-stackbuild": "dist/cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pachared/Stackbuild.create.project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pachared/Stackbuild.create.project/issues"
+  },
+  "homepage": "https://github.com/Pachared/Stackbuild.create.project#readme",
   "files": [
     "dist",
     "templates",

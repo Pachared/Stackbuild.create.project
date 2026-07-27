@@ -2,6 +2,11 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.2.3
+
+- Add canonical GitHub repository metadata required by npm trusted publishing.
+- Align the npm publishing workflow with npm's current trusted-publishing configuration.
+
 ## 0.2.2
 
 - Use a current npm CLI with Node 24 in the release workflow so npm trusted publishing can generate provenance through GitHub Actions.

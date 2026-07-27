@@ -14,16 +14,15 @@ jobs:
   publish:
     if: startsWith(github.event.release.tag_name, 'v') || startsWith(github.ref_name, 'v')
     runs-on: ubuntu-latest
-    environment: npm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.release.target_commitish || github.ref }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
-          cache: npm
+          package-manager-cache: false
       - run: npm ci
       - run: npm run typecheck && npm run lint && npm test && npm run build
       - name: Use current npm CLI for trusted publishing
@@ -36,4 +35,4 @@ jobs:
             echo "${package_name}@${package_version} is already published; skipping."
             exit 0
           fi
-          npm publish --provenance --access public
+          npm publish --access public
