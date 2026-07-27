@@ -5,7 +5,11 @@
 ## สิ่งที่ต้องมี
 
 - Node.js เวอร์ชัน 20 ขึ้นไป
-- Go เมื่อต้องการเลือก backend แบบ Go + Gin
+- Go รุ่น stable ปัจจุบัน เมื่อต้องการเลือก backend แบบ Go + Gin
+- Docker Compose v2 เมื่อต้องการเลือก Docker
+- pnpm, npm, Yarn หรือ Bun ตาม package manager ที่เลือก
+
+StackBuild ใช้ dependency tag `latest` ขณะสร้างโปรเจกต์ เพื่อให้ได้ stack ปัจจุบันที่สุด และมี CI รายสัปดาห์ตรวจ template กับ dependency ล่าสุดก่อน release
 
 ## สร้างโปรเจกต์
 
@@ -64,6 +68,23 @@ npm create stackbuild@latest my-project -- \
 | `--no-git` | ไม่สร้าง Git repository ในโปรเจกต์ใหม่ |
 | `--docker` / `--no-docker` | เปิดหรือปิดการสร้างไฟล์ Docker |
 | `--force` | อนุญาตให้สร้างในโฟลเดอร์ที่มีไฟล์อยู่แล้ว |
+| `--dry-run` | แสดงแผนการสร้างโดยไม่เขียนไฟล์ |
 | `--debug` | แสดงรายละเอียด error เพิ่มเติม |
 
 ค่าที่ระบุผ่าน flags จะมีผลเหนือกว่าคำตอบจากหน้าคำถาม
+
+ตัวอย่างตรวจแผนก่อนสร้าง:
+
+```bash
+npm create stackbuild@latest my-project -- \
+  --preset custom --apps customer,partner --frontend next --backend nest \
+  --database postgres --cache redis --package-manager pnpm --dry-run
+```
+
+## หาก setup ไม่สำเร็จ
+
+หากการติดตั้ง dependency หรือการตั้งค่า Go หยุดกลางทาง StackBuild จะเก็บไฟล์ที่สร้างแล้วไว้ และสร้าง `STACKBUILD_RECOVERY.md` ในโปรเจกต์ใหม่พร้อมคำสั่ง retry ที่ตรงกับ stack ที่เลือก
+
+## การ publish สำหรับผู้ดูแลแพ็กเกจ
+
+workflow GitHub Actions จะตรวจ typecheck, lint, tests และ generator matrix ทุกครั้งที่ push และทุกสัปดาห์ สำหรับการ publish ให้ตั้งค่า npm Trusted Publisher ให้เชื่อมกับ repository นี้และ workflow `Publish to npm`; เมื่อเผยแพร่ GitHub Release ที่มี tag รูปแบบ `v*` workflow จะ publish พร้อม npm provenance โดยไม่ต้องเก็บ npm token ใน GitHub Secrets

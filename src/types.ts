@@ -30,5 +30,5 @@ export interface CliOptions {
   preset?: Preset; frontend?: Frontend; backend?: Backend; ui?: Ui;
   database?: Database; cache?: Cache; packageManager?: PackageManager; docker?: boolean;
   apps?: Exclude<AppName, 'api'>[]; goModule?: string;
-  git?: boolean; install?: boolean; force?: boolean; debug?: boolean;
+  git?: boolean; install?: boolean; force?: boolean; debug?: boolean; dryRun?: boolean;
 }
