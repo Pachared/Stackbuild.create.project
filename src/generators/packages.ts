@@ -9,7 +9,7 @@ export async function generatePackages(o: StackOptions): Promise<void> {
   await pkg(o.targetDir, 'types', { 'src/index.ts': `export interface ApiResponse<T> { success: boolean; message: string; data: T; }\nexport interface User { id: string; email: string; name: string; }\nexport interface Pagination { page: number; limit: number; total: number; }\nexport interface ApiError { message: string; code?: string; }\nexport interface HealthResponse { status: 'healthy'; }\n` });
   await pkg(o.targetDir, 'config', { 'src/index.ts': `export const ports = { customer: ${o.frontend === 'vite' ? 5173 : 3000}, admin: ${o.frontend === 'vite' ? 5174 : 3001}, partner: ${o.frontend === 'vite' ? 5175 : 3002}, api: 8080 } as const;\nexport const appNames = ${JSON.stringify(o.apps)} as const;\n` });
   await pkg(o.targetDir, 'utils', { 'src/index.ts': `export const isNonEmpty = (value: string | null | undefined): value is string => Boolean(value?.trim());\nexport const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));\n` });
-  await pkg(o.targetDir, 'eslint-config', { 'base.js': `export default [{ ignores: ['dist', '.next', 'node_modules'] }];\n`, 'package.json': JSON.stringify({ name: '@stackbuild/eslint-config', private: true, type: 'module', exports: { './base': './base.js' } }, null, 2) });
+  await pkg(o.targetDir, 'eslint-config', { 'base.js': `export default [{ ignores: ['dist', '.next', 'node_modules'] }];\n`, 'package.json': JSON.stringify({ name: '@stackbuild/eslint-config', version: '0.1.0', private: true, type: 'module', exports: { './base': './base.js' } }, null, 2) });
   if (o.ui !== 'css') await pkg(o.targetDir, 'ui', { 'src/index.tsx': uiSource(o) });
 }
 function uiSource(o: StackOptions): string {
