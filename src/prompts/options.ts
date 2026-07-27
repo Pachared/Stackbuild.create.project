@@ -16,7 +16,7 @@ export async function collectOptions(projectName: string, targetDir: string, fla
   const backend = flags.backend ?? await select({ message: 'Backend stack:', choices: [choice('Go + Gin', 'go'), choice('Node.js + NestJS', 'nest')] }) as StackOptions['backend'];
   const ui = flags.ui ?? await select({ message: 'UI library:', choices: [choice('Material UI', 'mui'), choice('Tailwind CSS', 'tailwind'), choice('Plain CSS', 'css')] }) as StackOptions['ui'];
   const database = flags.database ?? await select({ message: 'Database:', choices: [choice('PostgreSQL', 'postgres'), choice('MySQL', 'mysql'), choice('SQLite', 'sqlite'), choice('No database', 'none')] }) as StackOptions['database'];
-  const packageManager = flags.packageManager ?? await select({ message: 'Package manager:', choices: ['npm', 'pnpm', 'yarn', 'bun'].map(x => choice(x, x)) }) as StackOptions['packageManager'];
+  const packageManager = flags.packageManager ?? await select({ message: 'Package manager:', choices: ['pnpm', 'npm', 'yarn', 'bun'].map(x => choice(x, x)) }) as StackOptions['packageManager'];
   const docker = flags.docker ?? await confirm({ message: 'Generate Docker support?', default: true });
   const git = flags.git ?? await confirm({ message: 'Initialize a Git repository?', default: true });
   const install = flags.install ?? await confirm({ message: 'Install dependencies now?', default: true });

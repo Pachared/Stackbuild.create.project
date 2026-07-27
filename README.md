@@ -68,6 +68,8 @@ npm create stackbuild@latest my-project -- \
 
 ค่าที่ระบุผ่าน flags จะมีผลเหนือกว่าคำตอบจากหน้าคำถาม
 
+สำหรับ monorepo ระบบจะเลือก `pnpm` เป็นค่าเริ่มต้น เพราะเหมาะกับการจัดการหลายแอปและ shared packages; เลือก package manager อื่นได้จากหน้าคำถามหรือ `--package-manager`
+
 ## Stack ที่รองรับ
 
 - Frontend: React + TypeScript + Vite หรือ Next.js + TypeScript + App Router
