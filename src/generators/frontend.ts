@@ -7,7 +7,7 @@ export async function generateFrontend(o: StackOptions, app: Exclude<AppName, 'a
 }
 async function vite(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void> {
   const root = o.targetDir, base = `apps/${app}`;
-  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@vitejs/plugin-react': '^4.4.0', typescript: '^5.8.0', vite: '^6.3.0', eslint: '^9.0.0' } });
+  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@vitejs/plugin-react': 'latest', typescript: 'latest', vite: 'latest', eslint: 'latest' } });
   await write(root, `${base}/.env.example`, 'VITE_API_URL=http://localhost:8080\n');
   await write(root, `${base}/index.html`, `<div id="root"></div><script type="module" src="/src/main.tsx"></script>\n`);
   await write(root, `${base}/vite.config.ts`, `import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nimport path from 'node:path';\nexport default defineConfig({ plugins: [react()], resolve: { alias: { '@': path.resolve(__dirname, 'src') } } });\n`);
@@ -19,7 +19,7 @@ async function vite(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void
 }
 async function next(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void> {
   const root = o.targetDir, base = `apps/${app}`;
-  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', scripts: { dev: `next dev --port ${NEXT_PORTS[app]}`, build: 'next build', start: `next start --port ${NEXT_PORTS[app]}`, lint: 'eslint .', typecheck: 'tsc --noEmit' }, dependencies: nextDeps(o), devDependencies: { '@types/node': '^22.0.0', '@types/react': '^19.0.0', typescript: '^5.8.0', eslint: '^9.0.0' } });
+  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', scripts: { dev: `next dev --port ${NEXT_PORTS[app]}`, build: 'next build', start: `next start --port ${NEXT_PORTS[app]}`, lint: 'eslint .', typecheck: 'tsc --noEmit' }, dependencies: nextDeps(o), devDependencies: { '@types/node': 'latest', '@types/react': 'latest', typescript: 'latest', eslint: 'latest' } });
   await write(root, `${base}/.env.example`, 'NEXT_PUBLIC_API_URL=http://localhost:8080\n');
   await write(root, `${base}/next.config.ts`, "import type { NextConfig } from 'next';\nconst nextConfig: NextConfig = {}; export default nextConfig;\n");
   await write(root, `${base}/postcss.config.mjs`, o.ui === 'tailwind' ? "export default { plugins: { '@tailwindcss/postcss': {} } };\n" : 'export default {};\n');
@@ -27,8 +27,8 @@ async function next(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void
   await write(root, `${base}/eslint.config.mjs`, "export default [{ ignores: ['.next'] }];\n");
   await frontendFiles(root, base, app, o, true);
 }
-function viteDeps(o: StackOptions) { return { react: '^19.1.0', 'react-dom': '^19.1.0', 'react-router-dom': '^7.6.0', axios: '^1.9.0', '@tanstack/react-query': '^5.0.0', zustand: '^5.0.0', ...(o.ui === 'mui' ? { '@mui/material': '^7.0.0', '@mui/icons-material': '^7.0.0', '@emotion/react': '^11.0.0', '@emotion/styled': '^11.0.0' } : o.ui === 'tailwind' ? { tailwindcss: '^4.0.0' } : {}) }; }
-function nextDeps(o: StackOptions) { return { next: '^15.3.0', react: '^19.1.0', 'react-dom': '^19.1.0', axios: '^1.9.0', '@tanstack/react-query': '^5.0.0', zustand: '^5.0.0', ...(o.ui === 'mui' ? { '@mui/material': '^7.0.0', '@mui/icons-material': '^7.0.0', '@emotion/react': '^11.0.0', '@emotion/styled': '^11.0.0' } : o.ui === 'tailwind' ? { tailwindcss: '^4.0.0', '@tailwindcss/postcss': '^4.0.0' } : {}) }; }
+function viteDeps(o: StackOptions) { return { react: 'latest', 'react-dom': 'latest', 'react-router-dom': 'latest', axios: 'latest', '@tanstack/react-query': 'latest', zustand: 'latest', ...(o.ui === 'mui' ? { '@mui/material': 'latest', '@mui/icons-material': 'latest', '@emotion/react': 'latest', '@emotion/styled': 'latest' } : o.ui === 'tailwind' ? { tailwindcss: 'latest' } : {}) }; }
+function nextDeps(o: StackOptions) { return { next: 'latest', react: 'latest', 'react-dom': 'latest', axios: 'latest', '@tanstack/react-query': 'latest', zustand: 'latest', ...(o.ui === 'mui' ? { '@mui/material': 'latest', '@mui/icons-material': 'latest', '@emotion/react': 'latest', '@emotion/styled': 'latest' } : o.ui === 'tailwind' ? { tailwindcss: 'latest', '@tailwindcss/postcss': 'latest' } : {}) }; }
 async function frontendFiles(root: string, base: string, app: string, o: StackOptions, isNext: boolean) {
   for (const folder of ['components', 'features', 'hooks', 'layouts', 'services', 'stores', 'styles', 'types', 'utils', ...(isNext ? ['app'] : ['api', 'assets', 'pages', 'routes'])]) await write(root, `${base}/src/${folder}/.gitkeep`, '');
   const css = o.ui === 'tailwind' ? '@import "tailwindcss";\n' : '*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:system-ui,sans-serif;color:#172033;background:#f8fafc}main{max-width:960px;margin:0 auto;padding:4rem 1.5rem}button{padding:.75rem 1rem;border:0;border-radius:.5rem;background:#0f172a;color:#fff}\n';

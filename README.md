@@ -72,6 +72,8 @@ npm create stackbuild@latest my-project -- \
 
 สำหรับ monorepo ระบบจะเลือก `pnpm` เป็นค่าเริ่มต้น เพราะเหมาะกับการจัดการหลายแอปและ shared packages; เลือก package manager อื่นได้จากหน้าคำถามหรือ `--package-manager`
 
+StackBuild จะระบุ JavaScript dependencies ด้วย tag `latest` ดังนั้นโปรเจกต์ใหม่จะติดตั้งเวอร์ชันล่าสุด ณ เวลาที่สั่งสร้าง และ Go จะ resolve dependencies ล่าสุดเมื่อรัน `go mod tidy` อย่างไรก็ตาม lockfile จะตรึงเวอร์ชันที่ติดตั้งแล้วไว้เพื่อให้ build ซ้ำได้อย่างสม่ำเสมอ; โปรเจกต์ที่สร้างไปแล้วต้องอัปเดต dependencies แยกต่างหาก เพราะไม่ควรเปลี่ยนเวอร์ชันในโปรเจกต์เดิมโดยอัตโนมัติ
+
 ## Stack ที่รองรับ
 
 - Frontend: React + TypeScript + Vite หรือ Next.js + TypeScript + App Router

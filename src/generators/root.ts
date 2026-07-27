@@ -12,7 +12,7 @@ export async function generateRoot(options: StackOptions): Promise<void> {
   }
   scripts.dev = 'concurrently ' + apps.map(app => `"${app === 'api' && options.backend === 'go' ? 'cd apps/api && go run ./cmd/api' : `${pm === 'npm' ? 'npm run' : pm} dev:${app}`}"`).join(' ');
   scripts.build = apps.map(app => app === 'api' && options.backend === 'go' ? 'cd apps/api && go build ./cmd/api' : `${pm === 'npm' ? 'npm run' : pm} build:${app}`).join(' && ');
-  await json(root, 'package.json', { name: options.projectName, private: true, version: '0.1.0', workspaces: pm === 'npm' || pm === 'yarn' ? ['apps/*', 'packages/*'] : undefined, scripts, devDependencies: { concurrently: '^9.1.0', prettier: '^3.6.0', rimraf: '^6.0.0', typescript: '^5.8.0' } });
+  await json(root, 'package.json', { name: options.projectName, private: true, version: '0.1.0', workspaces: pm === 'npm' || pm === 'yarn' ? ['apps/*', 'packages/*'] : undefined, scripts, devDependencies: { concurrently: 'latest', prettier: 'latest', rimraf: 'latest', typescript: 'latest' } });
   if (pm === 'pnpm') await write(root, 'pnpm-workspace.yaml', "packages:\n  - 'apps/*'\n  - 'packages/*'\nallowBuilds:\n  esbuild: true\n");
   await write(root, '.gitignore', 'node_modules/\ndist/\n.next/\n.env\ncoverage/\n*.db\n');
   await write(root, '.editorconfig', 'root = true\n[*]\ncharset = utf-8\nend_of_line = lf\nindent_style = space\nindent_size = 2\n');
