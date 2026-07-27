@@ -19,11 +19,13 @@ jobs:
           ref: ${{ github.event.release.target_commitish }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
       - run: npm ci
       - run: npm run typecheck && npm run lint && npm test && npm run build
+      - name: Use current npm CLI for trusted publishing
+        run: npm install --global npm@latest && npm --version
       - name: Publish when this version is not on npm yet
         run: |
           package_name=$(node -p "require('./package.json').name")

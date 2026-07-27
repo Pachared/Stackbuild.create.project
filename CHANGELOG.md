@@ -2,6 +2,10 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.2.2
+
+- Use a current npm CLI with Node 24 in the release workflow so npm trusted publishing can generate provenance through GitHub Actions.
+
 ## 0.2.1
 
 - Add `--template` as a clear alias for `--preset`.
