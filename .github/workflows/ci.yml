@@ -65,7 +65,7 @@ jobs:
         run: |
           if [ '${{ matrix.package_manager }}' = npm ]; then npm install; fi
           if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm install; fi
-          if [ '${{ matrix.package_manager }}' = yarn ]; then corepack enable && yarn install; fi
+          if [ '${{ matrix.package_manager }}' = yarn ]; then corepack enable && yarn install --ignore-engines; fi
           if [ '${{ matrix.package_manager }}' = bun ]; then bun install; fi
       - name: Build generated project
         working-directory: smoke-${{ matrix.frontend }}-${{ matrix.backend }}-${{ matrix.package_manager }}
