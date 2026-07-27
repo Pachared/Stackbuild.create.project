@@ -2,6 +2,10 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.2.5
+
+- Record npm trusted-publishing releases in GitHub's `npm` deployment environment.
+
 ## 0.2.4
 
 - Show a cyan ASCII StackBuild logo before interactive setup questions.
