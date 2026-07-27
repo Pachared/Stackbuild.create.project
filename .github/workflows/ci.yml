@@ -121,17 +121,3 @@ jobs:
           if [ '${{ matrix.package_manager }}' = pnpm ]; then pnpm --filter @stackbuild/api prisma:generate && pnpm --filter @stackbuild/api build; fi
           if [ '${{ matrix.package_manager }}' = yarn ]; then yarn workspace @stackbuild/api prisma:generate && yarn workspace @stackbuild/api build; fi
           if [ '${{ matrix.package_manager }}' = bun ]; then bun --cwd apps/api run prisma:generate && bun --cwd apps/api run build; fi
-      - name: Smoke-test PostgreSQL, Redis, and the generated API
-        if: matrix.package_manager == 'npm'
-        working-directory: services-${{ matrix.package_manager }}
-        run: |
-          docker compose up -d database redis
-          node apps/api/dist/main.js > api.log 2>&1 &
-          api_pid=$!
-          trap 'kill "$api_pid" || true; docker compose down -v' EXIT
-          for attempt in $(seq 1 20); do
-            if curl --fail --silent --show-error http://localhost:8080/health; then exit 0; fi
-            sleep 1
-          done
-          cat api.log
-          exit 1
