@@ -16,6 +16,8 @@ export const FRONTEND_APPS: AppName[] = ['customer', 'admin', 'partner'];
 export const STACK_VERSIONS = {
   next: '16.2.12',
   nest: '11.1.28',
+  nestConfig: '4.0.4',
+  nestSwagger: '11.4.6',
   nestCli: '11.0.24',
   nestSchematics: '11.1.0',
   react: '19.2.8',
