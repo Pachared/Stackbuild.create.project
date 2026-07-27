@@ -2,6 +2,10 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.2.4
+
+- Show a cyan ASCII StackBuild logo before interactive setup questions.
+
 ## 0.2.3
 
 - Add canonical GitHub repository metadata required by npm trusted publishing.
