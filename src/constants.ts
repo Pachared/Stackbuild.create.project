@@ -24,6 +24,6 @@ export const STACK_VERSIONS = {
   typescript: '6.0.3',
   vite: '8.1.5',
   viteReact: '6.0.4',
-  prisma: '7.9.1',
+  prisma: '6.19.3',
   ioredis: '5.11.1',
 } as const;
