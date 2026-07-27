@@ -40,10 +40,15 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
+          cache: false
       - uses: pnpm/action-setup@v4
         if: matrix.package_manager == 'pnpm'
+        with:
+          version: 10
       - uses: oven-sh/setup-bun@v2
         if: matrix.package_manager == 'bun'
+        with:
+          bun-version: latest
       - run: npm ci
       - run: npm run build
       - name: Generate a non-interactive project

@@ -7,9 +7,9 @@ export async function generateRoot(options: StackOptions): Promise<void> {
   const scripts: Record<string, string> = { format: 'prettier --write .', clean: 'rimraf apps/*/dist apps/*/.next' };
   for (const app of apps) {
     if (app === 'api' && options.backend === 'go') { scripts['dev:api'] = 'cd apps/api && go run ./cmd/api'; scripts['build:api'] = 'cd apps/api && go build ./cmd/api'; continue; }
-    scripts[`dev:${app}`] = pm === 'npm' ? `npm run dev -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} dev` : `${pm} --filter @stackbuild/${app} dev`;
-    scripts[`build:${app}`] = pm === 'npm' ? `npm run build -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} build` : `${pm} --filter @stackbuild/${app} build`;
-    scripts[`lint:${app}`] = pm === 'npm' ? `npm run lint -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} lint` : `${pm} --filter @stackbuild/${app} lint`;
+    scripts[`dev:${app}`] = pm === 'npm' ? `npm run dev -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} dev` : pm === 'bun' ? `bun --filter @stackbuild/${app} run dev` : `pnpm --filter @stackbuild/${app} dev`;
+    scripts[`build:${app}`] = pm === 'npm' ? `npm run build -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} build` : pm === 'bun' ? `bun --filter @stackbuild/${app} run build` : `pnpm --filter @stackbuild/${app} build`;
+    scripts[`lint:${app}`] = pm === 'npm' ? `npm run lint -w @stackbuild/${app}` : pm === 'yarn' ? `yarn workspace @stackbuild/${app} lint` : pm === 'bun' ? `bun --filter @stackbuild/${app} run lint` : `pnpm --filter @stackbuild/${app} lint`;
   }
   scripts.dev = 'concurrently ' + apps.map(app => `"${app === 'api' && options.backend === 'go' ? 'cd apps/api && go run ./cmd/api' : `${pm} run dev:${app}`}"`).join(' ');
   scripts.build = apps.map(app => app === 'api' && options.backend === 'go' ? 'cd apps/api && go build ./cmd/api' : `${pm} run build:${app}`).join(' && ');

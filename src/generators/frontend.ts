@@ -7,7 +7,7 @@ export async function generateFrontend(o: StackOptions, app: Exclude<AppName, 'a
 }
 async function vite(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void> {
   const root = o.targetDir, base = `apps/${app}`;
-  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@types/node': 'latest', '@vitejs/plugin-react': 'latest', typescript: 'latest', vite: 'latest', eslint: 'latest' } });
+  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', type: 'module', scripts: { dev: `vite --port ${VITE_PORTS[app]}`, build: 'tsc -b && vite build', lint: 'eslint .', typecheck: 'tsc -b --noEmit' }, dependencies: viteDeps(o), devDependencies: { '@types/node': 'latest', '@types/react': 'latest', '@types/react-dom': 'latest', '@vitejs/plugin-react': 'latest', typescript: 'latest', vite: 'latest', eslint: 'latest' } });
   await write(root, `${base}/.env.example`, 'VITE_API_URL=http://localhost:8080\n');
   await write(root, `${base}/index.html`, `<div id="root"></div><script type="module" src="/src/main.tsx"></script>\n`);
   await write(root, `${base}/vite.config.ts`, `import { fileURLToPath } from 'node:url';\nimport path from 'node:path';\nimport { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\nconst dirname = path.dirname(fileURLToPath(import.meta.url));\nexport default defineConfig({ plugins: [react()], resolve: { alias: { '@': path.resolve(dirname, 'src') } } });\n`);
@@ -19,7 +19,7 @@ async function vite(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void
 }
 async function next(o: StackOptions, app: Exclude<AppName, 'api'>): Promise<void> {
   const root = o.targetDir, base = `apps/${app}`;
-  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', scripts: { dev: `next dev --port ${NEXT_PORTS[app]}`, build: 'next build', start: `next start --port ${NEXT_PORTS[app]}`, lint: 'eslint .', typecheck: 'tsc --noEmit' }, dependencies: nextDeps(o), devDependencies: { '@types/node': 'latest', '@types/react': 'latest', typescript: 'latest', eslint: 'latest' } });
+  await json(root, `${base}/package.json`, { name: `@stackbuild/${app}`, private: true, version: '0.1.0', scripts: { dev: `next dev --port ${NEXT_PORTS[app]}`, build: 'next build', start: `next start --port ${NEXT_PORTS[app]}`, lint: 'eslint .', typecheck: 'tsc --noEmit' }, dependencies: nextDeps(o), devDependencies: { '@types/node': 'latest', '@types/react': 'latest', '@types/react-dom': 'latest', typescript: 'latest', eslint: 'latest' } });
   await write(root, `${base}/.env.example`, 'NEXT_PUBLIC_API_URL=http://localhost:8080\n');
   await write(root, `${base}/next.config.ts`, "import type { NextConfig } from 'next';\nconst nextConfig: NextConfig = {}; export default nextConfig;\n");
   await write(root, `${base}/postcss.config.mjs`, o.ui === 'tailwind' ? "export default { plugins: { '@tailwindcss/postcss': {} } };\n" : 'export default {};\n');
