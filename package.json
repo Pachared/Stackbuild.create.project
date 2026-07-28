@@ -1,6 +1,6 @@
 {
   "name": "create-stackbuild",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Interactive full-stack monorepo scaffolder",
   "type": "module",
   "bin": {

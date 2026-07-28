@@ -2,6 +2,10 @@
 
 All notable changes to Create StackBuild are documented in this file.
 
+## 0.3.0
+
+- Add selectable JWT authentication, User CRUD starter documentation, and generated GitHub Actions CI templates.
+
 ## 0.2.6
 
 - Disable Corepack's interactive download prompt when installing pnpm dependencies.
