@@ -6,6 +6,7 @@ import { generatePackages } from './generators/packages.js';
 import { generateFrontend } from './generators/frontend.js';
 import { generateBackend } from './generators/backend.js';
 import { generateDocker } from './generators/docker.js';
+import { generateFeatures } from './generators/features.js';
 import type { StackOptions } from './types.js';
 import { FRONTEND_APPS } from './constants.js';
 import { command } from './utils/process.js';
@@ -23,6 +24,7 @@ export async function generateProject(o: StackOptions): Promise<void> {
     await fs.outputFile(`${o.targetDir}/go.work`, `go ${goVersion}\nuse ./apps/api\n`);
   }
   if (o.docker) await generateDocker(o);
+  await generateFeatures(o);
   if (o.git) { try { await command('git', ['init'], o.targetDir); await command('git', ['add', '.'], o.targetDir); await command('git', ['commit', '-m', 'chore: initialize project with StackBuild'], o.targetDir); } catch { /* Git identity is optional. */ } }
   if (o.install) { const [cmd, args] = installCommand(o.packageManager); const packageManagerEnv = o.packageManager === 'pnpm' ? { COREPACK_ENABLE_DOWNLOAD_PROMPT: '0' } : undefined; await command(cmd, args, o.targetDir, packageManagerEnv); if (o.backend === 'nest' && o.database !== 'none') await command(o.packageManager, o.packageManager === 'npm' ? ['run', 'prisma:generate', '-w', '@stackbuild/api'] : o.packageManager === 'yarn' ? ['workspace', '@stackbuild/api', 'prisma:generate'] : ['--filter', '@stackbuild/api', 'prisma:generate'], o.targetDir, packageManagerEnv); }
   } catch (error) {
