@@ -18,9 +18,10 @@ export async function collectOptions(projectName: string, targetDir: string, fla
   const ui = flags.ui ?? await select({ message: 'UI library:', choices: [choice('Material UI', 'mui'), choice('Tailwind CSS', 'tailwind'), choice('Plain CSS', 'css')] }) as StackOptions['ui'];
   const database = flags.database ?? await select({ message: 'Database:', choices: [choice('PostgreSQL', 'postgres'), choice('MySQL', 'mysql'), choice('SQLite', 'sqlite'), choice('No database', 'none')] }) as StackOptions['database'];
   const cache = flags.cache ?? await select({ message: 'Add cache?', choices: [choice('Use Redis cache', 'redis'), choice('No cache', 'none')] }) as StackOptions['cache'];
-  const auth = flags.auth ?? await select({ message: 'Authentication:', choices: [choice('No authentication', 'none'), choice('JWT authentication', 'jwt')] }) as StackOptions['auth'];
-  const crud = flags.crud ?? await confirm({ message: 'Add a User CRUD example?', default: true });
-  const ci = flags.ci ?? await confirm({ message: 'Generate GitHub Actions CI?', default: true });
+  const nonInteractive = Boolean(flags.preset || flags.frontend || flags.backend || flags.ui || flags.database || flags.cache || flags.packageManager);
+  const auth = flags.auth ?? (nonInteractive ? 'none' : await select({ message: 'Authentication:', choices: [choice('No authentication', 'none'), choice('JWT authentication', 'jwt')] }) as StackOptions['auth']);
+  const crud = flags.crud ?? (nonInteractive ? true : await confirm({ message: 'Add a User CRUD example?', default: true }));
+  const ci = flags.ci ?? (nonInteractive ? true : await confirm({ message: 'Generate GitHub Actions CI?', default: true }));
   const packageManager = flags.packageManager ?? await select({ message: 'Package manager:', choices: ['pnpm', 'npm', 'yarn', 'bun'].map(x => choice(x, x)) }) as StackOptions['packageManager'];
   const docker = flags.docker ?? await confirm({ message: 'Generate Docker support?', default: true });
   const git = flags.git ?? await confirm({ message: 'Initialize a Git repository?', default: true });
