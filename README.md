@@ -68,7 +68,7 @@ npm create stackbuild@latest my-project -- \
 | `--skip-install` | สร้างไฟล์โดยไม่ติดตั้ง dependencies |
 | `--no-git` | ไม่สร้าง Git repository ในโปรเจกต์ใหม่ |
 | `--docker` / `--no-docker` | เปิดหรือปิดการสร้างไฟล์ Docker |
-| `--force` | อนุญาตให้สร้างในโฟลเดอร์ที่มีไฟล์อยู่แล้ว |
+| `--force` / `--overwrite` | อนุญาตให้สร้างในโฟลเดอร์ที่มีไฟล์อยู่แล้ว; เมื่อใช้ `npm create` ให้ใช้ `--overwrite` เพราะ npm สงวน `--force` ไว้ |
 | `--dry-run` | แสดงแผนการสร้างโดยไม่เขียนไฟล์ |
 | `--debug` | แสดงรายละเอียด error เพิ่มเติม |
 

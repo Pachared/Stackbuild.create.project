@@ -16,7 +16,7 @@ const program = new Command();
 program
   .name("create-stackbuild")
   .description("Create a production-ready full-stack monorepo")
-  .version("0.3.0")
+  .version("0.3.2")
   .argument("[project-name]")
   .option("--preset <preset>")
   .option("--template <template>", "Alias for --preset")
@@ -41,6 +41,10 @@ program
   .option("--docker")
   .option("--no-docker")
   .option("--force")
+  .option(
+    "--overwrite",
+    "Allow generation in a non-empty directory; use this with npm create because npm reserves --force"
+  )
   .option("--dry-run", "Show the generated plan without writing files")
   .option("--debug")
   .action(async (name, raw) => {
@@ -69,7 +73,7 @@ program
         docker: raw.docker,
         git: raw.git,
         install: !raw.skipInstall,
-        force: raw.force,
+        force: raw.force || raw.overwrite,
         dryRun: raw.dryRun,
         debug: raw.debug,
       };
