@@ -1,4 +1,11 @@
-# Create StackBuild
+<pre aria-label="Create StackBuild">
+  _____ _             _    ____        _ _     _
+ / ____| |           | |  |  _ \      (_) |   | |
+| (___ | |_ __ _  ___| | _| |_) |_   _ _| | __| |
+ \___ \| __/ _` |/ __| |/ /  _ <| | | | | |/ _` |
+ ____) | || (_| | (__|   <| |_) | |_| | | | (_| |
+|_____/ \__\__,_|\___|_|\_\____/ \__,_|_|_|\__,_|
+</pre>
 
 `create-stackbuild` คือ CLI สำหรับสร้างโปรเจกต์ full-stack แบบ monorepo ด้วยคำสั่ง `npm create stackbuild@latest my-project`
 
