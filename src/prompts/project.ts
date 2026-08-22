@@ -1,17 +1,24 @@
-import { input } from '@inquirer/prompts';
-import type { CliOptions } from '../types.js';
-import { normalizeProjectName, validateProjectName } from '../utils/validation.js';
+import { input } from "@inquirer/prompts";
+import type { CliOptions } from "../types.js";
+import {
+  normalizeProjectName,
+  validateProjectName,
+} from "../utils/validation.js";
 
 export async function getProjectName(name?: string): Promise<string> {
-  const value = name ?? await input({
-    message: 'Project name:',
-    validate: value => validateProjectName(normalizeProjectName(value)),
-  });
+  const value =
+    name ??
+    (await input({
+      message: "Project name:",
+      validate: (value) => validateProjectName(normalizeProjectName(value)),
+    }));
   const normalized = normalizeProjectName(value);
   const result = validateProjectName(normalized);
   if (result !== true) throw new Error(result);
   return normalized;
 }
 
-export function supplied<T>(value: T | undefined, fallback: T): T { return value ?? fallback; }
+export function supplied<T>(value: T | undefined, fallback: T): T {
+  return value ?? fallback;
+}
 export type PromptFlags = CliOptions;

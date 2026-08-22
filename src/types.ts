@@ -1,12 +1,13 @@
-export type Frontend = 'vite' | 'next';
-export type Backend = 'go' | 'nest';
-export type Ui = 'mui' | 'tailwind' | 'css';
-export type Database = 'postgres' | 'mysql' | 'sqlite' | 'none';
-export type Cache = 'redis' | 'none';
-export type Auth = 'none' | 'jwt';
-export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
-export type AppName = 'customer' | 'admin' | 'partner' | 'api';
-export type Preset = 'full' | 'customer-partner' | 'customer-admin' | 'customer-api' | 'custom';
+export type Frontend = "vite" | "next";
+export type Backend = "go" | "nest";
+export type Ui = "mui" | "tailwind" | "css";
+export type Database = "postgres" | "mysql" | "sqlite" | "none";
+export type Cache = "redis" | "none";
+export type Auth = "none" | "jwt";
+export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
+export type AppName = "customer" | "admin" | "partner" | "api";
+export type Preset =
+  "full" | "customer-partner" | "customer-admin" | "customer-api" | "custom";
 
 export interface StackOptions {
   projectName: string;
@@ -31,8 +32,22 @@ export interface StackOptions {
 }
 
 export interface CliOptions {
-  preset?: Preset; frontend?: Frontend; backend?: Backend; ui?: Ui;
-  database?: Database; cache?: Cache; auth?: Auth; crud?: boolean; ci?: boolean; packageManager?: PackageManager; docker?: boolean;
-  apps?: Exclude<AppName, 'api'>[]; goModule?: string;
-  git?: boolean; install?: boolean; force?: boolean; debug?: boolean; dryRun?: boolean;
+  preset?: Preset;
+  frontend?: Frontend;
+  backend?: Backend;
+  ui?: Ui;
+  database?: Database;
+  cache?: Cache;
+  auth?: Auth;
+  crud?: boolean;
+  ci?: boolean;
+  packageManager?: PackageManager;
+  docker?: boolean;
+  apps?: Exclude<AppName, "api">[];
+  goModule?: string;
+  git?: boolean;
+  install?: boolean;
+  force?: boolean;
+  debug?: boolean;
+  dryRun?: boolean;
 }

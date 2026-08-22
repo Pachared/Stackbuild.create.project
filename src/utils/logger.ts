@@ -1,4 +1,4 @@
-import pc from 'picocolors';
+import pc from "picocolors";
 
 const logo = `
    _____ _             _    ____        _ _     _
@@ -12,8 +12,10 @@ const logo = `
 export const log = {
   logo: () => {
     console.log(pc.cyan(logo));
-    console.log(`  ${pc.bold(pc.green('Create production-ready full-stack monorepos'))}`);
-    console.log(`  ${pc.dim('Create StackBuild')}`);
+    console.log(
+      `  ${pc.bold(pc.green("Create production-ready full-stack monorepos"))}`
+    );
+    console.log(`  ${pc.dim("Create StackBuild")}`);
   },
   title: (message: string) => console.log(`\n${pc.bold(pc.cyan(message))}`),
   info: (message: string) => console.log(pc.dim(message)),
