@@ -4,7 +4,12 @@ import type { AppName, Backend, Cache, Database, Frontend, PackageManager, Prese
 
 const NAME = /^[a-z0-9][a-z0-9_-]*$/;
 export function normalizeProjectName(value: string): string {
-  return value.trim().toLowerCase().replace(/\s+/g, '-');
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 export function validateProjectName(value: string): string | true {
   if (!value.trim()) return 'Project name is required.';
